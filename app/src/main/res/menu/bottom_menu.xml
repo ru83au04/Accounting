@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/create_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/create_page" />
+    <item
+        android:id="@+id/list_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/list_page" />
+    <item
+        android:id="@+id/calculate_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="?attr/actionModeSelectAllDrawable"
+        android:title="@string/calculate_page" />
+</menu>

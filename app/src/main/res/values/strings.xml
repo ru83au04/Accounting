@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Noah\'s App</string>
+    <string name="firstComponent">新的元件</string>
+    <string name="helloWorld">Hello World!</string>
+    <string name="inputOne">Name</string>
+    <string name="buttonOne">Fresh Hello World!</string>
+    <string name="test">Enter your Test</string>
+    <string name="title_activity_expense">Expense</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="ChangePage">ChangePage</string>
+    <string name="expense">Expense</string>
+    <string name="back_to_main">Back to Main</string>
+    <string name="create">ADD</string>
+    <string name="cost">cost</string>
+    <string name="title">title</string>
+    <string name="description">description</string>
+    <string name="date">date</string>
+    <string name="_05_30_1991">05/30/1991</string>
+    <string name="costView">Cost</string>
+    <string name="titleView">Title</string>
+    <string name="typeView">Type</string>
+    <string name="dateView">Date</string>
+    <string name="create_page">Create</string>
+    <string name="list_page">List</string>
+    <string name="calculate_page">Calculate</string>
+    <string-array name="typeList">
+        <item>EAT</item>
+        <item>CLOTHES</item>
+        <item>LIFE</item>
+        <item>TRAFFIC</item>
+        <item>HOBBY</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ex_title">Title</string>
+    <string name="ex_cost">Cost</string>
+    <string name="ex_date">Date</string>
+
+</resources>
