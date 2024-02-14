@@ -1,10 +1,10 @@
 package com.example.newproject;
 
 import android.app.DatePickerDialog;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,16 +19,21 @@ import android.widget.Toast;
 
 import com.example.newproject.database.DatabaseHelper;
 import com.example.newproject.helper.Expense;
+import com.example.newproject.helper.ExpenseManager;
 import com.example.newproject.helper.Type;
-import com.example.newproject.viewmodel.ExpenseViewModel;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.text.ParseException;
 
 public class CreateFragment extends Fragment {
 
     private View mainView;
     private DatabaseHelper databaseHelper;
+    private ExpenseManager expenseManager;
     private DatePickerDialog datePickerDialog;
+
     private Button date;
     private EditText cost, title, description;
     private Spinner type;
@@ -52,6 +57,10 @@ public class CreateFragment extends Fragment {
         // 獲取Activity的DatabaseHelper
         databaseHelper = ((MainActivity)requireActivity()).getDatabaseHelper();
 
+        expenseManager = ((MainActivity)requireActivity()).getExpenseManager();
+
+
+
         // 以下為頁面元件設定
 
 
@@ -59,7 +68,7 @@ public class CreateFragment extends Fragment {
         // 設定type Spinner的內容選項
         type = mainView.findViewById(R.id.type);
         ArrayAdapter<CharSequence> typeList = ArrayAdapter.createFromResource(
-                getContext(), R.array.typeList, android.R.layout.simple_spinner_item);
+                getContext(), R.array.type_list, android.R.layout.simple_spinner_item);
         typeList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         type.setAdapter(typeList);
 
@@ -88,15 +97,17 @@ public class CreateFragment extends Fragment {
         String expTitle = title.getText().toString();
         String stringExpCost = cost.getText().toString();
         String stringExpType = type.getSelectedItem().toString();
-        String expDate = date.getText().toString();
+        String stringExpDate = date.getText().toString();
         String expDesc = "" + description.getText().toString();
 
+        // 處理title
         if(expTitle.isEmpty()){
             Toast.makeText(getContext(),
                     "Please enter the Title", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // 處理cost
         double expCost = 0;
         if(stringExpCost.isEmpty()){
             Toast.makeText(getContext(),
@@ -111,12 +122,24 @@ public class CreateFragment extends Fragment {
             }
         }
 
+        //處理date
+        Date expDate = null;
+        SimpleDateFormat format =  new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+        try{
+            expDate = format.parse(stringExpDate);
+        }catch(ParseException e){
+            Toast.makeText(getContext(),
+                    "Date is illegal", Toast.LENGTH_SHORT).show();
+        }
+
+        // 處理type
         Type expType = Type.valueOf(stringExpType);
 
+        // 建立Expense
         Expense expense = new Expense(expTitle, expCost, expType, expDate, expDesc);
 
         try {
-            Expense.expenseArrayList.add(expense);
+            expenseManager.addExpense(expense);
             databaseHelper.insertData(expense);
             cost.setText("");
             title.setText("");

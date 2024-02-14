@@ -24,7 +24,7 @@
     <string name="create_page">Create</string>
     <string name="list_page">List</string>
     <string name="calculate_page">Calculate</string>
-    <string-array name="typeList">
+    <string-array name="type_list">
         <item>EAT</item>
         <item>CLOTHES</item>
         <item>LIFE</item>
@@ -36,5 +36,14 @@
     <string name="ex_title">Title</string>
     <string name="ex_cost">Cost</string>
     <string name="ex_date">Date</string>
+    <string name="ex_type">Type</string>
+    <string name="sort_by">Sort By:</string>
+    <string name="reverse">Reverse</string>
+    <string-array name="sort_list">
+        <item>COST</item>
+        <item>DATE</item>
+        <item>TYPE</item>
+    </string-array>
+
 
 </resources>

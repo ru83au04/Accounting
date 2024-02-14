@@ -6,13 +6,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.text.SimpleDateFormat;
 
 import com.example.newproject.helper.Expense;
+import com.example.newproject.helper.ExpenseManager;
 import com.example.newproject.helper.Type;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -29,16 +29,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATE_FIELD = "date";
     private static final String DESC_FIELD = "description";
 
-    @SuppressLint("SimpleDateFormat")
-    private static final DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+    private ExpenseManager expenseManager;
 
-    public DatabaseHelper(Context context) {
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+    public DatabaseHelper(Context context, ExpenseManager expenseManager) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.expenseManager = expenseManager;
     }
 
-    public static synchronized DatabaseHelper instanceOfDatabase(Context context){
+    public static synchronized DatabaseHelper instanceOfDatabase(Context context,
+                                                                 ExpenseManager expenseManager){
         if(databaseHelper == null){
-            databaseHelper = new DatabaseHelper(context);
+            databaseHelper = new DatabaseHelper(context, expenseManager);
         }
         return databaseHelper;
     }
@@ -57,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         TYPE_FIELD +
                         " TEXT, " +
                         DATE_FIELD +
-                        " TEXT, " +
+                        " DATE, " +
                         DESC_FIELD +
                         " TEXT)";
 
@@ -72,19 +76,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public ExpenseManager getExpenseManager(){
+        return expenseManager;
+    }
+
     public void insertData(Expense expense){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues expContent = new ContentValues();
         expContent.put(TITLE_FIELD, expense.getTitle());
         expContent.put(COST_FIELD, expense.getCost());
         expContent.put(TYPE_FIELD, String.valueOf(expense.getType()));
-        expContent.put(DATE_FIELD, expense.getDate());
+        expContent.put(DATE_FIELD, dateFormat.format(expense.getDate()));
         expContent.put(DESC_FIELD, expense.getDescription());
 
         db.insert(TABLE_NAME, null, expContent);
     }
 
-    public void populateExpenseListArray(){
+    public void listAllExpenses(){
+        expenseManager.getExpenseList().clear();
         SQLiteDatabase db = this.getReadableDatabase();
 
         try(Cursor result = db.rawQuery("SELECT * FROM " + TABLE_NAME, null)){
@@ -94,48 +103,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     double cost = result.getDouble(result.getColumnIndexOrThrow(COST_FIELD));
                     Type type = getTypeFromString(result
                             .getString(result.getColumnIndexOrThrow(TYPE_FIELD)));
-                    String date = result.getString(result
-                            .getColumnIndexOrThrow(DATE_FIELD));
+                    Date date = dateFormat.parse(result.getString(result
+                            .getColumnIndexOrThrow(DATE_FIELD)));
                     String desc = result.getString(result.getColumnIndexOrThrow(DESC_FIELD));
                     Expense expense = new Expense(title, cost, type, date, desc);
                     expense.setId(result.getLong(result.getColumnIndexOrThrow(ID_FIELD)));
-                    Expense.expenseArrayList.add(expense);
+                    expenseManager.addExpense(expense);
                 }
             }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
+
     public void updateExpenseInDB(Expense expense){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE_FIELD, expense.getTitle());
         contentValues.put(COST_FIELD, expense.getCost());
         contentValues.put(TYPE_FIELD, getStringFromType(expense.getType()));
-        contentValues.put(DATE_FIELD, expense.getDate());
+        contentValues.put(DATE_FIELD, dateFormat.format(expense.getDate()));
         contentValues.put(DESC_FIELD, expense.getDescription());
 
         db.update(TABLE_NAME, contentValues,
                 ID_FIELD + " =? ", new String[]{String.valueOf(expense.getId())});
     }
 
-    private String getStringFromDate(Date date) {
-        if(date == null){
-            return null;
-        }
-        return dateFormat.format(date);
-    }
-    private Date getDateFromString(String date){
-        try{
-            return dateFormat.parse(date);
-        }catch(ParseException | NullPointerException e){
-            return null;
-        }
-    }
     private String getStringFromType(Type type){
         return type.toString();
     }
     private Type getTypeFromString(String type){
         return Type.valueOf(type);
     }
-
 
 }

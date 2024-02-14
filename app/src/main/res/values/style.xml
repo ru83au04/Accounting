@@ -38,5 +38,12 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="date_spinner" parent="@android:style/Widget.Spinner">
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/ele_background</item>
+        <item name="android:textColor">#FF3F51B5</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
 </resources>

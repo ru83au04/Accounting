@@ -12,18 +12,28 @@
         android:layout_gravity="start"
         android:layout_weight="3"
         android:text="@string/ex_title"
-        android:textSize="15sp"
+        android:textSize="14sp"
+        android:textAlignment="viewStart"/>
+
+    <TextView
+        android:id="@+id/ex_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_weight="2"
+        android:text="@string/ex_type"
+        android:textSize="14sp"
         android:textAlignment="viewStart"/>
 
     <TextView
         android:id="@+id/ex_cost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="2"
         android:text="@string/ex_cost"
-        android:textSize="15sp"
-        android:textAlignment="viewEnd"/>
+        android:textSize="14sp"
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/ex_date"
@@ -32,6 +42,6 @@
         android:layout_gravity="end"
         android:layout_weight="2"
         android:text="@string/ex_date"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textAlignment="viewEnd"/>
 </LinearLayout>

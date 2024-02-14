@@ -9,12 +9,14 @@ import android.os.Bundle;
 
 import com.example.newproject.database.DatabaseHelper;
 import com.example.newproject.databinding.ActivityMainBinding;
+import com.example.newproject.helper.ExpenseManager;
 
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     DatabaseHelper databaseHelper;
+    ExpenseManager expenseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new CreateFragment());
 
-        databaseHelper = loadFromDBToMemory();
+        expenseManager = new ExpenseManager(this);
+
+        databaseHelper = DatabaseHelper.instanceOfDatabase(this, expenseManager);;
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, CreateFragment.newInstance())
@@ -47,16 +51,20 @@ public class MainActivity extends AppCompatActivity {
         return databaseHelper;
     }
 
-    private DatabaseHelper loadFromDBToMemory() {
-        DatabaseHelper databaseHelper = DatabaseHelper.instanceOfDatabase(this);
-        databaseHelper.populateExpenseListArray();
-        return databaseHelper;
-    }
+//    private DatabaseHelper loadFromDBToMemory() {
+//        DatabaseHelper databaseHelper =
+//        databaseHelper.populateExpenseListArray();
+//        return databaseHelper;
+//    }
 
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    public ExpenseManager getExpenseManager() {
+        return expenseManager;
     }
 }

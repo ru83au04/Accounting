@@ -12,6 +12,36 @@
         android:minHeight="?actionBarSize"
         android:theme="?actionBarTheme"
         android:background="@drawable/background">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/reverse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/reverse"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                 />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sort_by"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/selector_in_list"
+                style="@style/date_spinner"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
 
     </androidx.appcompat.widget.Toolbar>
     <ListView

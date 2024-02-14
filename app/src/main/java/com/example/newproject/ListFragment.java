@@ -3,17 +3,19 @@ package com.example.newproject;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.example.newproject.database.DatabaseHelper;
-import com.example.newproject.helper.Expense;
 import com.example.newproject.helper.ExpenseAdapter;
-import com.example.newproject.viewmodel.ExpenseViewModel;
+import com.example.newproject.helper.ExpenseManager;
 
 
 public class ListFragment extends Fragment {
@@ -25,11 +27,15 @@ public class ListFragment extends Fragment {
     private View mainView;
     private DatabaseHelper databaseHelper;
     private ListView listView;
+    private Spinner sort;
+    private Button reverseBtn;
+    private boolean reverse;
+    private ExpenseAdapter expenseAdapter;
+    private ExpenseManager expenseManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -41,25 +47,65 @@ public class ListFragment extends Fragment {
         // 獲取Activity的DatabaseHelper
         databaseHelper = ((MainActivity)requireActivity()).getDatabaseHelper();
 
+        expenseManager = databaseHelper.getExpenseManager();
+
 
 
         // 以下為頁面設定
 
 
 
+        // 設定Reverse Button
+        reverse = true;
+        reverseBtn = mainView.findViewById(R.id.reverse);
+        reverseBtn.setOnClickListener(v -> {
+            reverse = !reverse;
+            setListViewAdapter();
+        });
+
+        // 設定Sort Spinner的選項
+        sort = mainView.findViewById(R.id.selector_in_list);
+        ArrayAdapter<CharSequence> sortSelector = ArrayAdapter.createFromResource(
+                getContext(), R.array.sort_list, android.R.layout.simple_spinner_item);
+        sortSelector.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sort.setAdapter(sortSelector);
+        sort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                setListViewAdapter();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // 設定listView
         // 要將資料放入ListView中需要透過Adapter放入
         listView = mainView.findViewById(R.id.list_view);
-        setAdapter();
+        initListViewAdapter();
+        listView.setAdapter(expenseAdapter);
 
         return mainView;
     }
 
-    /**
-     *
-     */
-    private void setAdapter() {
-        ExpenseAdapter expenseAdapter = new ExpenseAdapter(getContext(), Expense.expenseArrayList);
-        listView.setAdapter(expenseAdapter);
+    private void setListViewAdapter(){
+        databaseHelper.listAllExpenses();
+        String sortTag = sort.getSelectedItem().toString();
+        switch(sortTag){
+            case "COST": expenseManager.sortByCost(reverse);
+                        break;
+            case "TYPE": expenseManager.sortByType(reverse);
+                        break;
+            case "DATE": expenseManager.sortByDate(reverse);
+                        break;
+        }
+        expenseAdapter.notifyDataSetChanged();
     }
+
+    private void initListViewAdapter(){
+        databaseHelper.listAllExpenses();
+        expenseAdapter = new ExpenseAdapter(getContext(), expenseManager.getExpenseList());
+    }
+
 }

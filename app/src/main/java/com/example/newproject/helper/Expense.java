@@ -1,18 +1,20 @@
 package com.example.newproject.helper;
 
+import android.annotation.SuppressLint;
+import android.icu.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Expense {
-    public static ArrayList<Expense> expenseArrayList = new ArrayList<>();
+public class Expense{
     private long id;
     private String title;
     private double cost;
     private Type type;
-    private String date;
+    private Date date;
     private String description;
 
-    public Expense(String title, double cost, Type type, String date, String description){
+    public Expense(String title, double cost, Type type, Date date, String description){
         this.type = type;
         this.title = title;
         this.cost = cost;
@@ -37,7 +39,7 @@ public class Expense {
         return cost;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -59,7 +61,7 @@ public class Expense {
         this.cost = cost;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

@@ -8,54 +8,54 @@
     android:background="@drawable/background">
 
     <TextView
-        android:id="@+id/costView"
+        android:id="@+id/titleView"
         style="@style/common_textView"
         android:layout_marginStart="25dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@null"
-        android:text="@string/costView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cost"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/cost"
-        style="@style/common_editText"
-        android:layout_width="200dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="25dp"
-        android:autofillHints=""
-        android:hint="@string/cost"
-        android:inputType="number"
-        app:layout_constraintStart_toEndOf="@id/costView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/titleView"
-        style="@style/common_textView"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
         android:text="@string/titleView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@id/costView" />
+        app:layout_constraintEnd_toStartOf="@id/title"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/title"
         style="@style/common_editText"
         android:layout_width="200dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         android:autofillHints=""
         android:hint="@string/title"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@id/titleView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cost" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/costView"
+        style="@style/common_textView"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/costView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cost"
+        app:layout_constraintTop_toBottomOf="@id/titleView" />
+
+    <EditText
+        android:id="@+id/cost"
+        style="@style/common_editText"
+        android:layout_width="200dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:autofillHints=""
+        android:hint="@string/cost"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@id/costView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <TextView
         android:id="@+id/typeView"
@@ -66,21 +66,19 @@
         android:text="@string/typeView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/type"
-        app:layout_constraintTop_toBottomOf="@id/titleView" />
+        app:layout_constraintTop_toBottomOf="@id/costView" />
 
     <Spinner
         android:id="@+id/type"
         style="@style/type_spinner"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_gravity="top|end"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
-        android:autofillHints=""
         app:layout_constraintStart_toEndOf="@id/typeView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toBottomOf="@id/cost" />
 
     <TextView
         android:id="@+id/dateView"
@@ -97,7 +95,6 @@
         android:id="@+id/date"
         style="@style/common_button"
         android:layout_width="200dp"
-        android:layout_gravity="top|end"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"

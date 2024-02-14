@@ -1,6 +1,8 @@
 package com.example.newproject.helper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import com.example.newproject.R;
 import java.util.List;
 
 public class ExpenseAdapter extends ArrayAdapter<Expense> {
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 
     public ExpenseAdapter(Context context, List<Expense> dataList){
         super(context, 0, dataList);
@@ -29,12 +33,14 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         }
 
         TextView title = convertView.findViewById(R.id.ex_title);
+        TextView type = convertView.findViewById(R.id.ex_type);
         TextView cost = convertView.findViewById(R.id.ex_cost);
         TextView date = convertView.findViewById(R.id.ex_date);
 
         title.setText(item.getTitle());
+        type.setText(String.valueOf(item.getType()));
         cost.setText(String.valueOf(item.getCost()));
-        date.setText(String.valueOf(item.getDate()));
+        date.setText(dateFormat.format(item.getDate()));
 
         return convertView;
     }
