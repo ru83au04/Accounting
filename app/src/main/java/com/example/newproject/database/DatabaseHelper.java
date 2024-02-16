@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.newproject.helper.Expense;
 import com.example.newproject.helper.ExpenseManager;
@@ -14,6 +16,7 @@ import com.example.newproject.helper.Type;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -28,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TYPE_FIELD = "type";
     private static final String DATE_FIELD = "date";
     private static final String DESC_FIELD = "description";
-
+    private Context context;
     private ExpenseManager expenseManager;
 
     @SuppressLint("SimpleDateFormat")
@@ -37,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context, ExpenseManager expenseManager) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.expenseManager = expenseManager;
+        this.context = context;
     }
 
     public static synchronized DatabaseHelper instanceOfDatabase(Context context,
@@ -88,7 +92,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         expContent.put(TYPE_FIELD, String.valueOf(expense.getType()));
         expContent.put(DATE_FIELD, dateFormat.format(expense.getDate()));
         expContent.put(DESC_FIELD, expense.getDescription());
-
         db.insert(TABLE_NAME, null, expContent);
     }
 

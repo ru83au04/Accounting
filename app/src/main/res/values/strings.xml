@@ -39,6 +39,13 @@
     <string name="ex_type">Type</string>
     <string name="sort_by">Sort By:</string>
     <string name="reverse">Reverse</string>
+    <string name="expense_title_view">Title</string>
+    <string name="expense_cost_view">Cost</string>
+    <string name="expense_type_view">Type</string>
+    <string name="expense_date_view">Date</string>
+    <string name="expense_description_view">Description</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
     <string-array name="sort_list">
         <item>COST</item>
         <item>DATE</item>

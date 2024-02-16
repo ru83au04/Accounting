@@ -12,23 +12,25 @@
         android:minHeight="?actionBarSize"
         android:theme="?actionBarTheme"
         android:background="@drawable/background">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
             <Button
                 android:id="@+id/reverse"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
                 android:text="@string/reverse"
                 android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                 />
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
                 android:text="@string/sort_by"
                 android:textAlignment="center"
                 android:textSize="20sp"
@@ -37,10 +39,11 @@
             <Spinner
                 android:id="@+id/selector_in_list"
                 style="@style/date_spinner"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="1" />
-        </LinearLayout>
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"/>
+<!--        </LinearLayout>-->
 
 
     </androidx.appcompat.widget.Toolbar>

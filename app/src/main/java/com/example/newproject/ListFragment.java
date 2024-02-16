@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.newproject.database.DatabaseHelper;
+import com.example.newproject.helper.Expense;
 import com.example.newproject.helper.ExpenseAdapter;
 import com.example.newproject.helper.ExpenseManager;
 
@@ -86,6 +87,8 @@ public class ListFragment extends Fragment {
         initListViewAdapter();
         listView.setAdapter(expenseAdapter);
 
+        setOnClickListener();
+
         return mainView;
     }
 
@@ -106,6 +109,18 @@ public class ListFragment extends Fragment {
     private void initListViewAdapter(){
         databaseHelper.listAllExpenses();
         expenseAdapter = new ExpenseAdapter(getContext(), expenseManager.getExpenseList());
+    }
+
+    private void setOnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Expense selectedExpense = (Expense)listView.getItemAtPosition(position);
+                ((MainActivity)requireActivity())
+                        .replaceFragment(new ExpenseFragment(selectedExpense));
+            }
+        });
     }
 
 }

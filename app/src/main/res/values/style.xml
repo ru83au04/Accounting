@@ -11,7 +11,6 @@
         <item name="android:layout_marginTop">30dp</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:background">@drawable/ele_background</item>
-        <item name="android:backgroundTint">@null</item>
         <item name="android:fontFamily">@font/ultra</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FF3F51B5</item>

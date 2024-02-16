@@ -93,68 +93,22 @@ public class CreateFragment extends Fragment {
      * 將頁面輸入資訊建立Expense實例，透過expenseViewModel存入DB
      */
     public void createExpense() {
-        Toast createResult;
         String expTitle = title.getText().toString();
         String stringExpCost = cost.getText().toString();
         String stringExpType = type.getSelectedItem().toString();
         String stringExpDate = date.getText().toString();
         String expDesc = "" + description.getText().toString();
 
-        // 處理title
-        if(expTitle.isEmpty()){
-            Toast.makeText(getContext(),
-                    "Please enter the Title", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // 處理cost
-        double expCost = 0;
-        if(stringExpCost.isEmpty()){
-            Toast.makeText(getContext(),
-                    "Please enter the Cost", Toast.LENGTH_SHORT).show();
-            return;
-        }else{
-            try{
-                expCost = Double.parseDouble(stringExpCost);
-            }catch(NumberFormatException e){
-                Toast.makeText(getContext(),
-                        "Cost must be number", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        //處理date
-        Date expDate = null;
-        SimpleDateFormat format =  new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
         try{
-            expDate = format.parse(stringExpDate);
-        }catch(ParseException e){
-            Toast.makeText(getContext(),
-                    "Date is illegal", Toast.LENGTH_SHORT).show();
-        }
-
-        // 處理type
-        Type expType = Type.valueOf(stringExpType);
-
-        // 建立Expense
-        Expense expense = new Expense(expTitle, expCost, expType, expDate, expDesc);
-
-        try {
-            expenseManager.addExpense(expense);
+            Expense expense = expenseManager.createExpense(expTitle, stringExpCost,
+                    stringExpType, stringExpDate, expDesc);
             databaseHelper.insertData(expense);
-            cost.setText("");
-            title.setText("");
-            description.setText("");
-            type.setSelection(0);
-            createResult = Toast.makeText(getContext(),
-                    "Create Success", Toast.LENGTH_SHORT);
-            createResult.show();
-        } catch (NullPointerException e) {
-            Toast errorEnter = Toast.makeText(getContext(),
-                    "Create Error", Toast.LENGTH_LONG);
-            errorEnter.show();
+            Toast.makeText(getContext(),
+                    "Create Success", Toast.LENGTH_SHORT).show();
+        }catch(Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.d("Create Error",e.toString());
         }
-
     }
 
     /**
