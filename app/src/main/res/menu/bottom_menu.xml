@@ -3,20 +3,20 @@
 
     <item
         android:id="@+id/create_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:icon="@android:drawable/ic_menu_save"
+        android:background="@mipmap/brown"
+        android:backgroundTint="@null"
         android:title="@string/create_page" />
     <item
         android:id="@+id/list_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:background="@mipmap/brown"
+        android:backgroundTint="@null"
         android:title="@string/list_page" />
     <item
         android:id="@+id/calculate_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:icon="?attr/actionModeSelectAllDrawable"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:background="@mipmap/brown"
+        android:backgroundTint="@null"
         android:title="@string/calculate_page" />
 </menu>

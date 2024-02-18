@@ -14,18 +14,20 @@ import java.util.Locale;
 
 public class ExpenseManager {
     private Context context;
-    private ArrayList<Expense> expenseList;
+    public static final ArrayList<Expense> expenseList = new ArrayList<>();
 
     public ExpenseManager(Context context){
         this.context = context;
-        this.expenseList = new ArrayList<>();
-    }
-
-    public ArrayList<Expense> getExpenseList(){
-        return expenseList;
     }
 
     public void addExpense(Expense expense){
+        expenseList.add(expense);
+    }
+    public void deleteExpense(Expense expense){
+        expenseList.remove(expense);
+    }
+    public void updateExpense(Expense expense){
+        expenseList.removeIf(e -> e.getId() == expense.getId());
         expenseList.add(expense);
     }
 
@@ -48,7 +50,6 @@ public class ExpenseManager {
                 throw new Exception("Cost must be number");
             }
         }
-
         //處理date
         Date expDate = null;
         SimpleDateFormat format =  new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
@@ -57,13 +58,10 @@ public class ExpenseManager {
         }catch(ParseException e){
             throw new Exception("Date is illegal");
         }
-
         // 處理type
         Type expType = Type.valueOf(stringExpType);
-
         // 建立Expense
         Expense expense = new Expense(expTitle, expCost, expType, expDate, expDesc);
-        expenseList.add(expense);
         return expense;
     }
 

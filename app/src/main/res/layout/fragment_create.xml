@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/titleView"
@@ -68,14 +67,15 @@
 
     <Spinner
         android:id="@+id/type"
-        style="@style/type_spinner"
+        style="@style/expense_type_spinner"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
-        app:layout_constraintStart_toEndOf="@id/typeView"
+        android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/typeView"
         app:layout_constraintTop_toBottomOf="@id/cost" />
 
     <TextView
@@ -91,12 +91,16 @@
 
     <Button
         android:id="@+id/date"
-        style="@style/common_button"
+        style="@style/expense_button"
+        android:background="@mipmap/yellow"
+        android:backgroundTint="@null"
         android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
-        android:textColor="#4CAF50"
+        android:textColor="#2D46CF"
+        app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dateView"
         app:layout_constraintTop_toBottomOf="@id/type" />
@@ -110,11 +114,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="20dp"
+        android:gravity="start"
         android:autofillHints=""
-        android:background="@drawable/ele_background"
         android:hint="@string/description"
         android:inputType="text"
         android:textSize="20sp"
+        android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@id/create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,8 +127,9 @@
 
     <Button
         android:id="@+id/create"
-        style="@style/common_button"
-        android:layout_width="match_parent"
+        style="@style/expense_button"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="bottom"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
@@ -132,9 +138,9 @@
         android:text="@string/create"
         android:textColor="#000000"
         android:textSize="20sp"
+        app:backgroundTint="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

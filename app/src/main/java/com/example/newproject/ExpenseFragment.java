@@ -1,6 +1,9 @@
 package com.example.newproject;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.database.sqlite.SQLiteException;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 
@@ -35,7 +38,7 @@ public class ExpenseFragment extends Fragment {
     private View mainView;
     private EditText title, cost, description;
     private Spinner type;
-    private Button date, edit, delete;
+    private Button date, edit, delete, back;
     private boolean editControl;
     private long id;
 
@@ -89,7 +92,13 @@ public class ExpenseFragment extends Fragment {
         type.setEnabled(editControl);
 
         edit = mainView.findViewById(R.id.edit);
-        edit.setOnClickListener(v -> setEdit());
+        edit.setOnClickListener(v -> editExpense());
+
+        delete = mainView.findViewById(R.id.delete);
+        delete.setOnClickListener(v -> deleteExpense());
+
+        back = mainView.findViewById(R.id.back);
+        back.setOnClickListener(v -> backToList());
 
         return mainView;
     }
@@ -139,34 +148,64 @@ public class ExpenseFragment extends Fragment {
         datePickerDialog.show();
     }
 
-    private void setEdit() {
-        editControl = !editControl;
-        edit.setText(editControl ? "Confirm" : "Edit");
+    private void editExpense() {
+        if(!edit.getText().toString().contains("CONFIRM")) {
+            editControl = !editControl;
+        }else{
+            String expTitle = title.getText().toString();
+            String stringExpCost = cost.getText().toString();
+            String stringExpType = type.getSelectedItem().toString();
+            String stringExpDate = date.getText().toString();
+            String expDesc = description.getText().toString();
+
+            try{
+                Expense expense = expenseManager.createExpense(expTitle, stringExpCost,
+                        stringExpType, stringExpDate, expDesc);
+                expense.setId(id);
+                databaseHelper.updateExpense(expense);
+                editControl = !editControl;
+                Toast.makeText(getContext(),
+                        "Update Success", Toast.LENGTH_SHORT).show();
+                Log.d("Update Error", "test Error");
+            }catch(Exception e){
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("Update Error",e.toString());
+            }
+        }
+        edit.setText(editControl ? "CONFIRM" : "EDIT");
 
         title.setEnabled(editControl);
         cost.setEnabled(editControl);
         description.setEnabled(editControl);
         date.setEnabled(editControl);
         type.setEnabled(editControl);
+    }
 
-        if(!edit.getText().toString().contains("Confirm")){
-            String expTitle = title.getText().toString();
-            String stringExpCost = cost.getText().toString();
-            String stringExpType = type.getSelectedItem().toString();
-            String stringExpDate = date.getText().toString();
-            String expDesc = "" + description.getText().toString();
+    public void deleteExpense(){
+        new AlertDialog.Builder(getActivity())
+                .setMessage("要確定欸")
+                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-            try{
-                Expense expense = expenseManager.createExpense(expTitle, stringExpCost,
-                        stringExpType, stringExpDate, expDesc);
-                expense.setId(id);
-                databaseHelper.updateExpenseInDB(expense);
-                Toast.makeText(getContext(),
-                        "Update Success", Toast.LENGTH_SHORT).show();
-            }catch(Exception e){
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("Update Error",e.toString());
-            }
-        }
+                    }
+                })
+                .setPositiveButton("確定", (dialog, which) -> {
+                    try{
+                        boolean result = databaseHelper.deleteExpense(expense);
+                        expenseManager.deleteExpense(expense);
+                        if(result){
+                            backToList();
+                            Toast.makeText(getContext(),
+                                    "Expense is deleted", Toast.LENGTH_LONG).show();
+                        }
+                    }catch(SQLiteException e){
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }).show();
+    }
+
+    public void backToList(){
+        ((MainActivity)requireActivity()).replaceFragment(new ListFragment());
     }
 }

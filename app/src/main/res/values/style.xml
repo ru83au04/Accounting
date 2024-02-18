@@ -1,48 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="type_spinner" parent="@android:style/Widget.Spinner">
-        <item name="android:textSize">20sp</item>
-        <item name="android:background">@drawable/ele_background</item>
+    <style name="expense_type_spinner" parent="@android:style/Widget.Spinner">
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:background">@mipmap/yellow</item>
         <item name="android:textColor">#FF3F51B5</item>
         <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="common_button">
-        <item name="android:layout_marginTop">30dp</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/ele_background</item>
+    <style name="expense_button">
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:background">@mipmap/brown</item>
         <item name="android:fontFamily">@font/ultra</item>
-        <item name="android:gravity">center</item>
         <item name="android:textColor">#FF3F51B5</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="common_textView" parent="@android:style/Widget.TextView">
+        <item name="backgroundTint">@null</item>
         <item name="android:layout_marginTop">30dp</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:layout_width">85dp</item>
-        <item name="android:background">@drawable/ele_background</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:background">@mipmap/blue_two</item>
         <item name="android:fontFamily">@font/ultra</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FF3F51B5</item>
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="common_editText" parent="@android:style/Widget.EditText">
+    <style name="dialog_view" parent="@android:style/Widget.TextView">
         <item name="android:layout_marginTop">30dp</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/ele_background</item>
+        <item name="android:layout_width">85dp</item>
+        <item name="android:background">@mipmap/yellow</item>
+        <item name="android:fontFamily">@font/ultra</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FF3F51B5</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="expense_text_view" parent="@android:style/Widget.TextView">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:fontFamily">@font/ultra</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FF3F51B5</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="common_editText" parent="@android:style/Widget.EditText">
+        <item name="backgroundTint">@null</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FF3F51B5</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="expense_edit_text" parent="@android:style/Widget.EditText">
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ele_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FF3F51B5</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="date_spinner" parent="@android:style/Widget.Spinner">
-        <item name="android:textSize">20sp</item>
+        <item name="backgroundTint">@null</item>
         <item name="android:background">@drawable/ele_background</item>
         <item name="android:textColor">#FF3F51B5</item>
         <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
     </style>
-
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.newproject.helper;
 
 public enum Type {
-    EAT, CLOTHES, LIFE, TRAFFIC, HOBBY
+
+    EAT, CLOTHES, LIVE, TRAFFIC, HOBBY, OTHER
 }

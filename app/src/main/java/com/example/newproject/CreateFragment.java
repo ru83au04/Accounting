@@ -97,7 +97,7 @@ public class CreateFragment extends Fragment {
         String stringExpCost = cost.getText().toString();
         String stringExpType = type.getSelectedItem().toString();
         String stringExpDate = date.getText().toString();
-        String expDesc = "" + description.getText().toString();
+        String expDesc = description.getText().toString();
 
         try{
             Expense expense = expenseManager.createExpense(expTitle, stringExpCost,
@@ -105,9 +105,13 @@ public class CreateFragment extends Fragment {
             databaseHelper.insertData(expense);
             Toast.makeText(getContext(),
                     "Create Success", Toast.LENGTH_SHORT).show();
+            title.setText("");
+            cost.setText("");
+            type.setSelection(0);
+            initDatePicker();
+            description.setText("");
         }catch(Exception e){
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.d("Create Error",e.toString());
         }
     }
 

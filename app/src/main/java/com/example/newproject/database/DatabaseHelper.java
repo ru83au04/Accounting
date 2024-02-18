@@ -5,10 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.newproject.helper.Expense;
 import com.example.newproject.helper.ExpenseManager;
@@ -16,7 +15,6 @@ import com.example.newproject.helper.Type;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -32,21 +30,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATE_FIELD = "date";
     private static final String DESC_FIELD = "description";
     private Context context;
-    private ExpenseManager expenseManager;
 
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 
-    public DatabaseHelper(Context context, ExpenseManager expenseManager) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.expenseManager = expenseManager;
         this.context = context;
     }
 
-    public static synchronized DatabaseHelper instanceOfDatabase(Context context,
-                                                                 ExpenseManager expenseManager){
+    public static synchronized DatabaseHelper instanceOfDatabase(Context context){
         if(databaseHelper == null){
-            databaseHelper = new DatabaseHelper(context, expenseManager);
+            databaseHelper = new DatabaseHelper(context);
         }
         return databaseHelper;
     }
@@ -71,7 +66,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(sqlCreate);
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String upgradeTableQuery = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -80,28 +74,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public ExpenseManager getExpenseManager(){
-        return expenseManager;
-    }
-
-    public void insertData(Expense expense){
+    public void insertData(Expense expense) throws SQLiteException{
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues expContent = new ContentValues();
         expContent.put(TITLE_FIELD, expense.getTitle());
         expContent.put(COST_FIELD, expense.getCost());
         expContent.put(TYPE_FIELD, String.valueOf(expense.getType()));
         expContent.put(DATE_FIELD, dateFormat.format(expense.getDate()));
         expContent.put(DESC_FIELD, expense.getDescription());
-        db.insert(TABLE_NAME, null, expContent);
+        try {
+            db.insert(TABLE_NAME, null, expContent);
+        }catch(SQLiteException e){
+            throw new SQLiteException();
+        }
+        listAllExpenses();
     }
-
-    public void listAllExpenses(){
-        expenseManager.getExpenseList().clear();
+    public void updateExpense(Expense expense) throws SQLiteException{
         SQLiteDatabase db = this.getReadableDatabase();
 
-        try(Cursor result = db.rawQuery("SELECT * FROM " + TABLE_NAME, null)){
-            if(result.getCount() != 0){
-                while(result.moveToNext()){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ID_FIELD, expense.getId());
+        contentValues.put(TITLE_FIELD, expense.getTitle());
+        contentValues.put(COST_FIELD, expense.getCost());
+        contentValues.put(TYPE_FIELD, getStringFromType(expense.getType()));
+        contentValues.put(DATE_FIELD, dateFormat.format(expense.getDate()));
+        contentValues.put(DESC_FIELD, expense.getDescription());
+        try {
+            db.update(TABLE_NAME, contentValues,
+                    ID_FIELD + " =? ", new String[]{String.valueOf(expense.getId())});
+            listAllExpenses();
+        }catch(SQLiteException e){
+            throw new SQLiteException();
+        }
+    }
+    public boolean deleteExpense(Expense expense) throws SQLiteException{
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try {
+            db.delete(TABLE_NAME,
+                    ID_FIELD + " =? ", new String[]{String.valueOf(expense.getId())});
+            listAllExpenses();
+            return true;
+        }catch(SQLiteException e){
+            throw new SQLiteException();
+        }
+    }
+    public void listAllExpenses() throws RuntimeException{
+        SQLiteDatabase db = this.getReadableDatabase();
+        ExpenseManager.expenseList.clear();
+        try (Cursor result = db.rawQuery("SELECT * FROM " + TABLE_NAME, null)) {
+            if (result.getCount() != 0) {
+                while (result.moveToNext()) {
                     String title = result.getString(result.getColumnIndexOrThrow(TITLE_FIELD));
                     double cost = result.getDouble(result.getColumnIndexOrThrow(COST_FIELD));
                     Type type = getTypeFromString(result
@@ -111,27 +135,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String desc = result.getString(result.getColumnIndexOrThrow(DESC_FIELD));
                     Expense expense = new Expense(title, cost, type, date, desc);
                     expense.setId(result.getLong(result.getColumnIndexOrThrow(ID_FIELD)));
-                    expenseManager.addExpense(expense);
+                    ExpenseManager.expenseList.add(expense);
                 }
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
-
-    public void updateExpenseInDB(Expense expense){
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TITLE_FIELD, expense.getTitle());
-        contentValues.put(COST_FIELD, expense.getCost());
-        contentValues.put(TYPE_FIELD, getStringFromType(expense.getType()));
-        contentValues.put(DATE_FIELD, dateFormat.format(expense.getDate()));
-        contentValues.put(DESC_FIELD, expense.getDescription());
-
-        db.update(TABLE_NAME, contentValues,
-                ID_FIELD + " =? ", new String[]{String.valueOf(expense.getId())});
-    }
-
     private String getStringFromType(Type type){
         return type.toString();
     }

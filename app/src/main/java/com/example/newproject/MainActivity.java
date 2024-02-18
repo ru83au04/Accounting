@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.newproject.database.DatabaseHelper;
 import com.example.newproject.databinding.ActivityMainBinding;
@@ -28,20 +29,25 @@ public class MainActivity extends AppCompatActivity {
 
         expenseManager = new ExpenseManager(this);
 
-        databaseHelper = DatabaseHelper.instanceOfDatabase(this, expenseManager);;
+        databaseHelper = DatabaseHelper.instanceOfDatabase(this);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, CreateFragment.newInstance())
-                .commit();
+        replaceFragment(new CreateFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if(id == R.id.create_page){
-                replaceFragment(new CreateFragment());
-            } else if( id == R.id.list_page){
-                replaceFragment(new ListFragment());
-            } else if(id == R.id.calculate_page){
-                replaceFragment(new CalculateFragment());
+            Fragment fragment = getSupportFragmentManager().findFragmentById(id);
+            if(fragment == null){
+                if(id == R.id.create_page){
+                    replaceFragment(new CreateFragment());
+                } else if(id == R.id.list_page){
+                    replaceFragment(new ListFragment());
+                } else if(id == R.id.calculate_page){
+                    Toast.makeText(this, "施工中...", Toast.LENGTH_SHORT).show();
+//                replaceFragment(new CalculateFragment());
+                }
+            }
+            else{
+                replaceFragment(fragment);
             }
             return true;
         });
@@ -51,17 +57,12 @@ public class MainActivity extends AppCompatActivity {
         return databaseHelper;
     }
 
-//    private DatabaseHelper loadFromDBToMemory() {
-//        DatabaseHelper databaseHelper =
-//        databaseHelper.populateExpenseListArray();
-//        return databaseHelper;
-//    }
-
     public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public ExpenseManager getExpenseManager() {
