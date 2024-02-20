@@ -22,6 +22,7 @@ import com.example.newproject.database.DatabaseHelper;
 import com.example.newproject.helper.Expense;
 import com.example.newproject.helper.ExpenseAdapter;
 import com.example.newproject.helper.ExpenseManager;
+import com.example.newproject.helper.Type;
 
 
 public class ListFragment extends Fragment {
@@ -107,11 +108,11 @@ public class ListFragment extends Fragment {
         databaseHelper.listAllExpenses();
         String sortTag = sort.getSelectedItem().toString();
         switch(sortTag){
-            case "COST": expenseManager.sortByCost(reverse);
+            case "金額": expenseManager.sortByCost(reverse);
                         break;
-            case "TYPE": expenseManager.sortByType(reverse);
+            case "類型": expenseManager.sortByType(reverse);
                         break;
-            case "DATE": expenseManager.sortByDate(reverse);
+            case "日期": expenseManager.sortByDate(reverse);
                         break;
         }
         expenseAdapter.notifyDataSetChanged();
@@ -150,12 +151,24 @@ public class ListFragment extends Fragment {
 
                 title.setText(selectedExpense.getTitle());
                 cost.setText(String.valueOf(selectedExpense.getCost()));
-                type.setText(String.valueOf(selectedExpense.getType()));
+                type.setText(typeToString(selectedExpense.getType()));
                 date.setText(dateFormat.format(selectedExpense.getDate()));
                 description.setText(selectedExpense.getDescription());
                 dialog.show();
             }
         });
+    }
+
+    public String typeToString(Type type){
+        switch(type){
+            case EAT: return "飲食";
+            case CLOTHES: return "服飾";
+            case LIVE: return "日常生活";
+            case TRAFFIC: return "交通";
+            case HOBBY: return "娛樂";
+            case OTHER: return "其他";
+        }
+        return "";
     }
 
 }

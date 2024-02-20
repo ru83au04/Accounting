@@ -11,26 +11,26 @@
     <string name="ChangePage">ChangePage</string>
     <string name="expense">Expense</string>
     <string name="back_to_main">Back to Main</string>
-    <string name="create">ADD</string>
-    <string name="cost">cost</string>
-    <string name="title">title</string>
-    <string name="description">description</string>
-    <string name="date">date</string>
+    <string name="create">新增</string>
+    <string name="cost">金額</string>
+    <string name="title">名稱</string>
+    <string name="description">備註</string>
+    <string name="date">日期</string>
     <string name="_05_30_1991">05/30/1991</string>
-    <string name="costView">Cost</string>
-    <string name="titleView">Title</string>
-    <string name="typeView">Type</string>
-    <string name="dateView">Date</string>
+    <string name="costView">金額</string>
+    <string name="titleView">名稱</string>
+    <string name="typeView">類型</string>
+    <string name="dateView">日期</string>
     <string name="create_page">Create</string>
     <string name="list_page">List</string>
     <string name="calculate_page">Calculate</string>
     <string-array name="type_list">
-        <item>EAT</item>
-        <item>CLOTHES</item>
-        <item>LIVE</item>
-        <item>TRAFFIC</item>
-        <item>HOBBY</item>
-        <item>OTHER</item>
+        <item>飲食</item>
+        <item>服飾</item>
+        <item>日常生活</item>
+        <item>交通</item>
+        <item>娛樂</item>
+        <item>其他</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -38,20 +38,20 @@
     <string name="ex_cost">Cost</string>
     <string name="ex_date">Date</string>
     <string name="ex_type">Type</string>
-    <string name="sort_by">Sort By:</string>
-    <string name="reverse">Reverse</string>
+    <string name="sort_by">排序方式</string>
+    <string name="reverse">遞增/遞減</string>
     <string name="expense_title_view">TITLE</string>
     <string name="expense_cost_view">COST</string>
     <string name="expense_type_view">TYPE</string>
     <string name="expense_date_view">DATE</string>
     <string name="expense_description_view">Description</string>
-    <string name="edit">EDITE</string>
-    <string name="delete">DELETE</string>
-    <string name="back">BACK</string>
+    <string name="edit">編輯</string>
+    <string name="delete">刪除</string>
+    <string name="back">返回</string>
     <string-array name="sort_list">
-        <item>COST</item>
-        <item>DATE</item>
-        <item>TYPE</item>
+        <item>金額</item>
+        <item>日期</item>
+        <item>類型</item>
     </string-array>
 
 

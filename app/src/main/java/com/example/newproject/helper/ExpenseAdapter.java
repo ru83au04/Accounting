@@ -38,10 +38,22 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         TextView date = convertView.findViewById(R.id.ex_date);
 
         title.setText(item.getTitle());
-        type.setText(String.valueOf(item.getType()));
+        type.setText(typeToString(item.getType()));
         cost.setText(String.valueOf(item.getCost()));
         date.setText(dateFormat.format(item.getDate()));
 
         return convertView;
+    }
+
+    public String typeToString(Type type){
+        switch(type){
+            case EAT: return "飲食";
+            case CLOTHES: return "服飾";
+            case LIVE: return "日常生活";
+            case TRAFFIC: return "交通";
+            case HOBBY: return "娛樂";
+            case OTHER: return "其他";
+        }
+        return "";
     }
 }

@@ -59,10 +59,21 @@ public class ExpenseManager {
             throw new Exception("Date is illegal");
         }
         // 處理type
-        Type expType = Type.valueOf(stringExpType);
+        Type expType = typeSelect(stringExpType);
         // 建立Expense
         Expense expense = new Expense(expTitle, expCost, expType, expDate, expDesc);
         return expense;
+    }
+
+    public Type typeSelect(String type){
+        switch(type){
+            case "飲食": return Type.EAT;
+            case "服飾": return Type.CLOTHES;
+            case "日常生活": return Type.LIVE;
+            case "交通": return Type.TRAFFIC;
+            case "娛樂": return Type.HOBBY;
+            default: return Type.OTHER;
+        }
     }
 
     public void sortByCost(boolean reverse){
