@@ -33,14 +33,10 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         }
 
         TextView title = convertView.findViewById(R.id.ex_title);
-        TextView type = convertView.findViewById(R.id.ex_type);
         TextView cost = convertView.findViewById(R.id.ex_cost);
-        TextView date = convertView.findViewById(R.id.ex_date);
 
         title.setText(item.getTitle());
-        type.setText(typeToString(item.getType()));
         cost.setText(String.valueOf(item.getCost()));
-        date.setText(dateFormat.format(item.getDate()));
 
         return convertView;
     }

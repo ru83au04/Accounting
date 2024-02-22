@@ -60,7 +60,6 @@
     <style name="expense_edit_text" parent="@android:style/Widget.EditText">
         <item name="android:layout_marginTop">30dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/ele_background</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FF3F51B5</item>
         <item name="android:textSize">14sp</item>
@@ -68,7 +67,6 @@
 
     <style name="date_spinner" parent="@android:style/Widget.Spinner">
         <item name="backgroundTint">@null</item>
-        <item name="android:background">@drawable/ele_background</item>
         <item name="android:textColor">#FF3F51B5</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>

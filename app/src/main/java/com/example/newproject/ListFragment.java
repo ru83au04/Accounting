@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +19,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.newproject.database.DatabaseHelper;
 import com.example.newproject.helper.Expense;
 import com.example.newproject.helper.ExpenseAdapter;
 import com.example.newproject.helper.ExpenseManager;
+import com.example.newproject.helper.ListAdapter;
 import com.example.newproject.helper.Type;
 
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements ListAdapter.OnItemClickListener{
 
     public static ListFragment newInstance() {
         return new ListFragment();
@@ -33,13 +37,12 @@ public class ListFragment extends Fragment {
 
     private View mainView;
     private DatabaseHelper databaseHelper;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private Spinner sort;
     private Button reverseBtn;
     private boolean reverse;
     private View dialogView;
     private AlertDialog dialog;
-    private ExpenseAdapter expenseAdapter;
     private ExpenseManager expenseManager;
 
     @Override
@@ -57,12 +60,26 @@ public class ListFragment extends Fragment {
         // 獲取Activity的DatabaseHelper
         databaseHelper = ((MainActivity)requireActivity()).getDatabaseHelper();
 
+        // 獲取Activity的ExpenseManager
         expenseManager = ((MainActivity)requireActivity()).getExpenseManager();
 
 
 
         // 以下為頁面設定
 
+
+        // 將資料庫的所有帳務讀取至expenseManager的靜態列表
+        databaseHelper.listAllExpenses();
+
+        // 設定列表的顯示方式，以LinearLayout的方式去排列
+        // 再利用ExpenseManager裡的列表為資料源建立adapter
+        // 最後再將兩者綁定在一起
+        recyclerView = mainView.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        ListAdapter adapter = new ListAdapter(ExpenseManager.expenseList);
+        // 將此Fragment作為監聽對象，好處是可以將事件處理邏輯封裝在此Fragment內
+        adapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(adapter);
 
 
         // 設定Reverse Button及觸發邏輯
@@ -71,6 +88,7 @@ public class ListFragment extends Fragment {
         reverseBtn.setOnClickListener(v -> {
             reverse = !reverse;
             setListViewAdapter();
+            adapter.notifyDataSetChanged();
         });
 
         // 設定Sort Spinner的選項
@@ -83,6 +101,7 @@ public class ListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setListViewAdapter();
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -90,20 +109,48 @@ public class ListFragment extends Fragment {
             }
         });
 
-        // 設定listView
-        // 要將資料放入ListView中需要透過Adapter放入
-        listView = mainView.findViewById(R.id.list_view);
-        initListViewAdapter();
-        listView.setAdapter(expenseAdapter);
-
-        setItemOnClickListener();
-
+        // 建立共用的AlerDialog視窗
         dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_expense, container, false);
 
         return mainView;
     }
 
+
+    /**ListFragment引用了介面ListAdapter.OnItemClickListener
+     * 所以要實作抽象方法onItemClick用來作為列表項目被點擊時的動作
+     * 在此處的動作狀態為把列表項目的詳細內容以AlertDialog方式顯示出來
+     */
+    @Override
+    public void onItemClick(int position) {
+        Expense selectedExpense = ExpenseManager.expenseList.get(position);
+        if(dialog == null){
+            dialog = new AlertDialog.Builder(getActivity())
+                    .setPositiveButton("確認", (d, w) -> {})
+                    .setNegativeButton("編輯",(d, w) -> {
+                        ((MainActivity)requireActivity()).
+                                replaceFragment(new ExpenseFragment(selectedExpense));
+                    }).create();
+        }
+        dialog.setView(dialogView);
+
+        TextView title = dialogView.findViewById(R.id.dialog_title);
+        TextView cost = dialogView.findViewById(R.id.dialog_cost);
+        TextView type = dialogView.findViewById(R.id.dialog_type);
+        TextView date = dialogView.findViewById(R.id.dialog_date);
+        TextView description = dialogView.findViewById(R.id.dialog_description);
+
+        title.setText(selectedExpense.getTitle());
+        cost.setText(String.valueOf(selectedExpense.getCost()));
+        type.setText(typeToString(selectedExpense.getType()));
+        date.setText(selectedExpense.getDateByString());
+        description.setText(selectedExpense.getDescription());
+        dialog.show();
+    }
+
+    /**
+     * 建立要放入Spinner的選項內容
+     */
     private void setListViewAdapter(){
         databaseHelper.listAllExpenses();
         String sortTag = sort.getSelectedItem().toString();
@@ -115,50 +162,13 @@ public class ListFragment extends Fragment {
             case "日期": expenseManager.sortByDate(reverse);
                         break;
         }
-        expenseAdapter.notifyDataSetChanged();
     }
 
-    private void initListViewAdapter(){
-        if(expenseAdapter == null){
-            databaseHelper.listAllExpenses();
-            expenseAdapter = new ExpenseAdapter(getContext(), ExpenseManager.expenseList);
-        }
-        expenseAdapter.notifyDataSetChanged();
-    }
-
-    private void setItemOnClickListener() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Expense selectedExpense = (Expense)listView.getItemAtPosition(position);
-                if(dialog == null){
-                    dialog = new AlertDialog.Builder(getActivity())
-                            .setPositiveButton("確認", (d, w) -> {})
-                            .setNegativeButton("編輯",(d, w) -> {
-                                ((MainActivity)requireActivity()).
-                                        replaceFragment(new ExpenseFragment(selectedExpense));
-                            }).create();
-                }
-                dialog.setView(dialogView);
-
-                TextView title = dialogView.findViewById(R.id.dialog_title);
-                TextView cost = dialogView.findViewById(R.id.dialog_cost);
-                TextView type = dialogView.findViewById(R.id.dialog_type);
-                TextView date = dialogView.findViewById(R.id.dialog_date);
-                TextView description = dialogView.findViewById(R.id.dialog_description);
-
-                title.setText(selectedExpense.getTitle());
-                cost.setText(String.valueOf(selectedExpense.getCost()));
-                type.setText(typeToString(selectedExpense.getType()));
-                date.setText(dateFormat.format(selectedExpense.getDate()));
-                description.setText(selectedExpense.getDescription());
-                dialog.show();
-            }
-        });
-    }
-
+    /**
+     * 將enum Type轉為中文字串
+     * @param type
+     * @return
+     */
     public String typeToString(Type type){
         switch(type){
             case EAT: return "飲食";

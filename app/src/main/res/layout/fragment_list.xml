@@ -10,47 +10,52 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?actionBarSize"
-        android:theme="?actionBarTheme"
-        android:background="@drawable/background">
+        android:theme="?actionBarTheme">
+        <Button
+            android:id="@+id/reverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@mipmap/blue_two_sm"
+            android:text="@string/reverse"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/reverse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:text="@string/reverse"
-                android:textAlignment="center"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/sort_by"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:text="@string/sort_by"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/selector_in_list"
-                style="@style/date_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"/>
+        <Spinner
+            android:id="@+id/selector_in_list"
+            style="@style/expense_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"/>
 
     </androidx.appcompat.widget.Toolbar>
-    <ListView
-        android:id="@+id/list_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="3dp"
-        android:dividerHeight="3dp"
-        android:background="#D5EEF1">
-    </ListView>
+        android:layout_height="match_parent" />
+
+<!--    <ListView-->
+<!--        android:id="@+id/list_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="3dp"-->
+<!--        android:divider="@null"-->
+<!--        android:dividerHeight="3dp"-->
+<!--        android:padding="3dp">-->
+<!--    </ListView>-->
 
 
 </LinearLayout>

@@ -26,21 +26,21 @@ public class Expense{
     public long getId() {
         return id;
     }
-
     public Type getType() {
         return type;
     }
-
     public String getTitle() {
         return title;
     }
-
     public double getCost() {
         return cost;
     }
-
     public Date getDate() {
         return date;
+    }
+    public String getDateByString(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        return dateFormat.format(this.date);
     }
 
     public String getDescription() {

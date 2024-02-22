@@ -37,17 +37,17 @@ public class ExpenseManager {
 
         // 處理title
         if(expTitle.isEmpty()){
-           throw new Exception("Please enter the title");
+           throw new Exception("請輸入名稱");
         }
         // 處理cost
         double expCost = 0;
         if(stringExpCost.isEmpty()){
-            throw new Exception("Please enter the cost");
+            throw new Exception("請輸入金額");
         }else{
             try{
                 expCost = Double.parseDouble(stringExpCost);
             }catch(NumberFormatException e){
-                throw new Exception("Cost must be number");
+                throw new Exception("金額必須為數字");
             }
         }
         //處理date
@@ -56,7 +56,7 @@ public class ExpenseManager {
         try{
             expDate = format.parse(stringExpDate);
         }catch(ParseException e){
-            throw new Exception("Date is illegal");
+            throw new Exception("日期格式錯誤");
         }
         // 處理type
         Type expType = typeSelect(stringExpType);

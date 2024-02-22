@@ -140,7 +140,7 @@ public class ExpenseFragment extends Fragment {
             return format.parse(date);
         }catch(ParseException e){
             Toast.makeText(getContext(),
-                    "Date is illegal", Toast.LENGTH_SHORT).show();
+                    "日期格式錯誤", Toast.LENGTH_SHORT).show();
             return new Date();
         }
     }
@@ -150,7 +150,7 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void editExpense() {
-        if(!edit.getText().toString().contains("CONFIRM")) {
+        if(!edit.getText().toString().contains("確認")) {
             editControl = !editControl;
         }else{
             String expTitle = title.getText().toString();
@@ -166,14 +166,12 @@ public class ExpenseFragment extends Fragment {
                 databaseHelper.updateExpense(expense);
                 editControl = !editControl;
                 Toast.makeText(getContext(),
-                        "Update Success", Toast.LENGTH_SHORT).show();
-                Log.d("Update Error", "test Error");
+                        "更新成功", Toast.LENGTH_SHORT).show();
             }catch(Exception e){
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("Update Error",e.toString());
             }
         }
-        edit.setText(editControl ? "CONFIRM" : "EDIT");
+        edit.setText(editControl ? "確認" : "編輯");
 
         title.setEnabled(editControl);
         cost.setEnabled(editControl);
@@ -198,7 +196,7 @@ public class ExpenseFragment extends Fragment {
                         if(result){
                             backToList();
                             Toast.makeText(getContext(),
-                                    "Expense is deleted", Toast.LENGTH_LONG).show();
+                                    "項目已刪除", Toast.LENGTH_LONG).show();
                         }
                     }catch(SQLiteException e){
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();

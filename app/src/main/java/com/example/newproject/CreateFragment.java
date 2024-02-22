@@ -41,10 +41,6 @@ public class CreateFragment extends Fragment {
     private EditText cost, title, description;
     private Spinner type;
 
-    public static CreateFragment newInstance() {
-        return new CreateFragment();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +103,7 @@ public class CreateFragment extends Fragment {
                     stringExpType, stringExpDate, expDesc);
             databaseHelper.insertData(expense);
             Toast.makeText(getContext(),
-                    "Create Success", Toast.LENGTH_SHORT).show();
+                    "新增成功！", Toast.LENGTH_SHORT).show();
             title.setText("");
             cost.setText("");
             type.setSelection(0);

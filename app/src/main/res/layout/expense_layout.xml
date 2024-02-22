@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/expense_view"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@mipmap/red_bottom_line"
+    android:padding="20dp"
+    android:elevation="8dp">
+
+    <TextView
+        android:id="@+id/recycler_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="@string/title"
+        android:textSize="14sp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp" />
+
+    <TextView
+        android:id="@+id/recycler_cost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/cost"
+        android:textAlignment="viewEnd"
+        android:textSize="14sp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp" />
+
+    <TextView
+        android:id="@+id/recycler_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/date"
+        android:textAlignment="viewEnd"
+        android:textSize="14sp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp" />
+
+</LinearLayout>
